@@ -1,0 +1,22 @@
+{% extends "header.html" %}
+{%  block body %}
+<div class="container-fluid">
+    <div class="well well-sm" style="min-height:100%; max-width:80%; margin:auto">
+        <div role="tabpanel" id="vm-names">
+            {% include 'vmsearch.html' %}
+            <br>
+            {% include 'vmtable.html' %}
+            <script>
+                $(document).ready(function() {
+                setInterval("ajaxd()",1000); // call every 10 seconds
+                });
+
+                function ajaxd() {
+                //reload result into element with id "sysStatus"
+                $("#vmlisting").load("/update/", function(){});
+                }
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}

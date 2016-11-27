@@ -1,0 +1,22 @@
+{% extends "header.html" %}
+{%  block body %}
+    {% include 'servicetable.html' %}
+    <!-- Button trigger modal -->
+    <div class="text-center">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" href="{{url_for('register_service')}}#myModal" data-target="#myModal"
+                style="margin: 0 auto;">
+          Add Monitor Service
+        </button>
+    </div>
+     <script>
+                    $(document).ready(function() {
+                    setInterval("ajaxd()",2000); // call every 10 seconds
+                    });
+
+                    function ajaxd() {
+                    //reload result into element with id "sysStatus"
+                    $("#svclisting").load("/servicescheck/", function(){});
+                    }
+
+    </script>
+{% endblock %}

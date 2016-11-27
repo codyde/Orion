@@ -1,0 +1,34 @@
+<div>
+    <script type="text/javascript">
+        // JavaScript source code
+// JavaScript source code
+$(document).ready(function () {
+     function get_vm_names() {
+        $.ajax({
+            url: "/vmnames/",
+            success: function (data) {
+                // Initializing the typeahead
+                $('.typeahead').typeahead({
+                    hint: true,
+                    highlight: true, /* Enable substring highlighting */
+                    minLength: 1 /* Specify minimum characters required for showing suggestions */
+                },
+                {
+                    name: 'cars',
+                    source: new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        local: data
+                    })
+                });
+            }
+        });
+    }
+     get_vm_names();
+});
+    </script>
+    <div style=text-align:center;>
+        <h2>Search VM Name</h2>
+        <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false" placeholder="VM Name">
+    </div>
+</div>
