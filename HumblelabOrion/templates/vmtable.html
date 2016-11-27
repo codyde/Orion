@@ -1,40 +1,40 @@
 <div style="width: 50%; margin: auto;">
     <table class="table table-striped table-hover table-condensed" id="vmlisting">
         <thead>
-            <tr>
-                <th>
-                    Virtual Machines
-                </th>
-                <th>
-                    Power Status
-                </th>
-                <th>
-                    In Progress
-                </th>
-            </tr>
+        <tr>
+            <th>
+                Virtual Machines
+            </th>
+            <th>
+                Power Status
+            </th>
+            <th>
+                In Progress
+            </th>
+        </tr>
         </thead>
         <tbody>
-             {% for i in vms  %}
-                {% if i['powerStatus']=='poweredOn' %}
-                    <tr class="success">
-                {% else %}
-                    <tr class="danger">
-                {% endif %}
-                    <td>{{ i['name']}}</td>
-                 {% if i['powerStatus']=='poweredOn' %}
-                    <td>
-                        On
-                    </td>
-                 {% else %}
-                    <td>
-                        Off
-                    </td>
-                 {% endif %}
-                    <td>
-                        In progress
-                    </td>
-                </tr>
-            {% endfor %}
+        {% for i in vms %}
+            {% if i['powerStatus']=='poweredOn' %}
+                <tr class="success">
+                    {% else %}
+                <tr class="danger">
+            {% endif %}
+        <td>{{ i['name'] }}</td>
+        {% if i['powerStatus']=='poweredOn' %}
+            <td>
+                On
+            </td>
+        {% else %}
+            <td>
+                Off
+            </td>
+        {% endif %}
+        <td>
+            In progress
+        </td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>

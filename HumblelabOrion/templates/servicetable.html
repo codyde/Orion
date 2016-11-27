@@ -1,36 +1,36 @@
 <div style="width: 50%; margin: auto;">
     <table class="table table-striped table-hover table-condensed table-bordered" id="svclisting">
         <thead class="thead-inverse">
-            <tr>
-                <th>
-                    Service Name
-                </th>
-                <th>
-                    Service Address
-                </th>
-                <th>
-                    Port
-                </th>
-            </tr>
+        <tr>
+            <th>
+                Service Name
+            </th>
+            <th>
+                Service Address
+            </th>
+            <th>
+                Port
+            </th>
+        </tr>
         </thead>
         <tbody>
-            {% for svc in svcs %}
-               {% if svc.serviceStatus==True %}
-                    <tr class="success">
-               {% else %}
-                    <tr class="danger">
-               {% endif %}
-                        <td>
-                            {{ svc.serviceName }}
-                        </td>
-                        <td>
-                            {{ svc.serviceAddress }}
-                        </td>
-                        <td>
-                            {{ svc.servicePort }}
-                        </td>
-                    </tr>
-            {% endfor %}
+        {% for svc in svcs %}
+            {% if svc.serviceStatus==True %}
+                <tr class="success">
+                    {% else %}
+                <tr class="danger">
+            {% endif %}
+        <td>
+            {{ svc.serviceName }}
+        </td>
+        <td>
+            {{ svc.serviceAddress }}
+        </td>
+        <td>
+            {{ svc.servicePort }}
+        </td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
