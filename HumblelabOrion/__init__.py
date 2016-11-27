@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, request, url_for,jsonify
+from flask import Flask, render_template, flash, redirect, request, url_for, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from getallvms import vconnect
@@ -36,8 +36,22 @@ class RegisterServiceForm(FlaskForm):
     servicePort = IntegerField('servicePort')
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == "POST":
+        attempted_username = request.form['username']
+        attempted_password = request.form['password']
+        # flash(attempted_username)
+        # flash(attempted_password)
+        if attempted_username == "admin" and attempted_password == "password":
+            flash("Successful Login")
+            session['logged_in'] = True
+            session['username'] = request.form['username']
+            print(session['logged_in'])
+            return redirect(url_for('index'))
+        else:
+            flash("Failure")
+            session['logged_in'] = False
     return render_template('index.html')
 
 
@@ -51,6 +65,7 @@ def update():
     si = vconnect()
     the_data = json.loads(si)
     return render_template('vmtable.html', vms=the_data)
+
 
 @app.route('/vmnames/')
 def vmnames():
@@ -69,6 +84,7 @@ def vmsearch():
 
 @app.route('/services/')
 def service():
+    print(session['logged_in'])
     return render_template('services.html')
 
 
