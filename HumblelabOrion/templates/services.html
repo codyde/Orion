@@ -2,6 +2,7 @@
 {% block body %}
     {% include 'servicetable.html' %}
     <!-- Button trigger modal -->
+    {% if session['logged_in']==True %}
     <div class="text-center">
         <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
                 href="{{ url_for('register_service') }}#myModal" data-target="#myModal"
@@ -9,6 +10,14 @@
             Add Monitor Service
         </button>
     </div>
+    {% else %}
+    <div class="text-center">
+        <button type="button" class="btn btn-alert btn-lg" data-toggle="modal"
+                href="#" style="margin: 0 auto;">
+            Login to Add Service
+    </button>
+    </div>
+    {% endif %}
     <script>
         $(document).ready(function () {
             setInterval("ajaxd()", 2000); // call every 10 seconds
