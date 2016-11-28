@@ -44,10 +44,9 @@ def index():
         # flash(attempted_username)
         # flash(attempted_password)
         if attempted_username == "admin" and attempted_password == "password":
-            flash("Successful Login")
             session['logged_in'] = True
             session['username'] = request.form['username']
-            print(session['logged_in'])
+            flash("Authentication Successful")
             return redirect(url_for('index'))
         else:
             flash("Failure")
@@ -67,6 +66,14 @@ def update():
     return render_template('vmtable.html', vms=the_data)
 
 
+@app.route('/logout/')
+def logout():
+    session.pop('username', None)
+    session['logged_in'] = False
+    flash("Logged Out")
+    return redirect(url_for('index'))
+
+
 @app.route('/vmnames/')
 def vmnames():
     si = vconnect()
@@ -84,7 +91,6 @@ def vmsearch():
 
 @app.route('/services/')
 def service():
-    print(session['logged_in'])
     return render_template('services.html')
 
 
