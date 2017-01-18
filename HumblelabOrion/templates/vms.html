@@ -5,17 +5,19 @@
             <div role="tabpanel" id="vm-names">
                 {% include 'vmsearch.html' %}
                 <br>
-                {% include 'vmtable.html' %}
+                    <div id="table">
+                        {% include 'vmtable.html' %}
+                    </div>
                 <script>
                     $(document).ready(function () {
-                        setInterval("ajaxd()", 1000); // call every 10 seconds
-                    });
-
-                    function ajaxd() {
-                        //reload result into element with id "sysStatus"
-                        $("#vmlisting").load("/update/", function () {
+                        var socket = io.connect('http://' + document.domain + ':' + location.port);
+                        socket.on('semit', function (data) {
+                            $("#table").html(data);
                         });
-                    }
+                        socket.on('connect', function(){
+                        socket.emit('sockets', null);
+                        });
+                    });
                 </script>
             </div>
         </div>
