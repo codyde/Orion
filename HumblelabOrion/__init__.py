@@ -5,8 +5,8 @@ from getallvms import vconnect
 from wtforms import StringField, IntegerField
 from socketCheck import check_server
 from flask_assets import Bundle, Environment
+from flask_socketio import SocketIO, emit
 import json
-
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -16,10 +16,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 env = Environment(app)
-js = Bundle('js/jquery-3.1.1.js', 'js/bootstrap.min.js', 'js/typeahead.bundle.js')
+js = Bundle('js/jquery-3.1.1.js', 'js/bootstrap.min.js', 'js/typeahead.bundle.js', 'js/socket.io.js')
 env.register('js_all', js)
 css = Bundle('css/bootstrap.css', 'css/typeahead.css')
 env.register('css_all', css)
+
+socketio = SocketIO(app)
 
 
 class Services(db.Model):
@@ -59,11 +61,11 @@ def vms():
     return render_template('vms.html')
 
 
-@app.route('/update/')
-def update():
+@socketio.on('sockets')
+def update(args):
     si = vconnect()
     the_data = json.loads(si)
-    return render_template('vmtable.html', vms=the_data)
+    emit('semit', render_template('vmtable.html', vms=the_data), broadcast=True)
 
 
 @app.route('/logout/')
@@ -121,8 +123,7 @@ def register_service():
         return str(e)
     return render_template('addservice.html')
 
-
 if __name__ == '__main__':
     db.create_all()
-#   app.debug = True
-    app.run()
+    app.debug = True
+    socketio.run(app)
