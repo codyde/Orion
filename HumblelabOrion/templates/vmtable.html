@@ -1,4 +1,4 @@
-<div style="width: 50%; margin: auto;">
+<div style="width: 60%; margin: auto;">
     <table class="table table-striped table-hover table-condensed" id="vmlisting">
         <thead>
         <tr>
@@ -9,7 +9,7 @@
                 Power Status
             </th>
             <th>
-                In Progress
+                IP Address
             </th>
         </tr>
         </thead>
@@ -31,7 +31,7 @@
             </td>
         {% endif %}
         <td>
-            In progress
+            {{ i['ipAddress'] }}
         </td>
         </tr>
         {% endfor %}
