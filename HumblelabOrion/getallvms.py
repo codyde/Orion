@@ -28,9 +28,11 @@ def vconnect():
     objects_list = []
     for child in children:
         summary = child.summary
-        d = collections.OrderedDict()
-        d['name'] = summary.config.name
-        d['powerStatus'] = summary.runtime.powerState
-        objects_list.append(d)
+        if summary.config.template is False:
+            d = collections.OrderedDict()
+            d['name'] = summary.config.name
+            d['powerStatus'] = summary.runtime.powerState
+            d['ipAddress'] = summary.guest.ipAddress
+            objects_list.append(d)
     j = json.dumps(objects_list)
     return j
