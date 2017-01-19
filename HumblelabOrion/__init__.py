@@ -6,12 +6,18 @@ from wtforms import StringField, IntegerField
 from socketCheck import check_server
 from flask_assets import Bundle, Environment
 from flask_socketio import SocketIO, emit
+from gevent import monkey
+import time
+from threading import Thread
 import json
+
+monkey.patch_all()
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///orion.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
 
 db = SQLAlchemy(app)
 
@@ -22,6 +28,7 @@ css = Bundle('css/bootstrap.css', 'css/typeahead.css')
 env.register('css_all', css)
 
 socketio = SocketIO(app)
+thread = None
 
 
 class Services(db.Model):
@@ -58,14 +65,20 @@ def index():
 
 @app.route('/vms/')
 def vms():
+    global thread
+    if thread is None:
+        thread = Thread(target=update)
+        thread.start()
     return render_template('vms.html')
 
 
 @socketio.on('sockets')
 def update(args):
-    si = vconnect()
-    the_data = json.loads(si)
-    emit('semit', render_template('vmtable.html', vms=the_data), broadcast=True)
+    while True:
+        socketio.sleep(10)
+        si = vconnect()
+        the_data = json.loads(si)
+        emit('semit', render_template('vmtable.html', vms=the_data), broadcast=True)
 
 
 @app.route('/logout/')
@@ -123,7 +136,9 @@ def register_service():
         return str(e)
     return render_template('addservice.html')
 
+
 if __name__ == '__main__':
     db.create_all()
     app.debug = True
     socketio.run(app)
+    time.sleep(1)
